@@ -15,7 +15,10 @@
         header("Location: ../404.php");
         exit();
        }else{
-        unlink("../images/".$delete['cover']);
+        if(file_exists("../images/".$delete['cover'])){
+            unlink("../images/".$delete['cover']);
+        }
+      
        }
 
        $result = execute($bdd,"DELETE FROM products WHERE id=?",[$_GET['delete']]);
