@@ -35,7 +35,14 @@
             <div class="form-group my-2">
                 <label for="categorie">Catégorie: </label>
                 <select name="categorie" id="categorie" class="form-control">
-                    <option value="1">Catégorie 1</option>
+                    <?php
+                        require "../config/connexion.php";
+                        require "functions.php";
+                        $categories = fetchAll($bdd,"SELECT * FROM categories ORDER BY id");
+                    ?>
+                    <?php foreach($categories as $category): ?>
+                    <option value="<?= $category['id'] ?>"><?= $category['name'] ?></option>
+                    <?php endforeach; ?>
                 </select>
             </div>
             <div class="form-group my-2">
