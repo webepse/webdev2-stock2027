@@ -1,27 +1,33 @@
 <?php
     require "../config/session.php";
 
+    // Vérifier le type de méthode HTTP
     if($_SERVER['REQUEST_METHOD'] !== "POST"){
         http_response_code(405); // 405 Méthode non autorisée
         header("Allow: POST"); // indiquer la méthode autorisée
         exit("Méthode non autorisée, Utilisez POST");
     }
+    /************************/
 
+    // Gestion faille CSRF (voir dans le formulaire + après la gestion de la base de données)
     if(!isset($_SESSION['csrf_token'], $_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'],$_POST['csrf_token'])){
         http_response_code(403);
         exit("Jeton de sécurité invalide");
     }
+    /************************/
 
+
+    // gestion des erreurs (hors fichier)
+    // init de la var err à 0
     $err = 0;
 
-    // opérateur de coalescence nulle (Null Coalescing Operator)
-    // c'est un raccouci pour dire : " si la valeur à gauche existe et n'est pas nul, utilise là, sinon, utilise la valeur par défaut à droite
-
+    // nettoyage des données (hors fichier) 
     $name = trim($_POST['name'] ?? "");
     $description = trim($_POST['description'] ?? "");
     $prix = trim($_POST['prix'] ?? "");
     $categorie = trim($_POST['categorie'] ?? "");
 
+    // vérification des données en conformité avec ce que l'on veut récupérer
     if (empty($name)){
         $err = 1;
     }elseif (empty($description)){
@@ -34,8 +40,10 @@
         $err = 5;
     }
 
+    // vérification de la var err si 0 ok sinon redirection vers formulaire
     if($err===0){
         
+        // vérification si l'image est envoyée et dans une bonne condition
         if(!isset($_FILES['cover']) || $_FILES['cover']['error'] !== UPLOAD_ERR_OK){
             header("Location: addProduct.php?error=6");
             exit();
@@ -52,9 +60,7 @@
             exit();
         }
 
-        // extension
-        // image.php.jpg
-        // image.JPG
+        // vérification de l'extensions
         $extension = strtolower(pathinfo($_FILES['cover']['name'], PATHINFO_EXTENSION));
         $extensionAutorisees = ['jpg','jpeg','png','svg',"webp"];
 
@@ -62,8 +68,10 @@
             header("Location: addProduct.php?error=8");
             exit();
         }
+        /************************/ 
 
-        // vérification du Mime Type => utilisation contenu binaire(fileinfo)
+
+        // vérification du Mime Type 
         $finfo = new finfo(FILEINFO_MIME_TYPE);
         $mimeReel = $finfo->file($tmpPath);
 
@@ -79,23 +87,23 @@
             header("Location: addProduct.php?error=9");
             exit();
         }
+        /************************/ 
 
-        // gestion du nom du fichier
-        // dossier/ico/fichier.jpg
-        // fichier.jpg
+        // changement du nom du fichier (sanitize)
         $nomImage =  basename($_FILES['cover']['name']);
         $nomImageLisible = strtr($nomImage, 'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ','AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
         $nomImageSafe = preg_replace('/([^.a-z0-9]+)/i', '-', $nomImageLisible);
         $uniqnomSafe = uniqid().'-'.$nomImageSafe;
 
-
+        // autre solution : remplacement complet du nom
         // $uniqnomSafe = bin2hex(random_bytes(16)).'.'.$extension;
 
-        // dfkqsjfkldfj-fichier.jpg
-        // imagesdfkqsjfkldfj-fichier.jpg
+        // dossier de destination
         $dossierDestination = "../images/";
         
+         // déplacement du fichier
         if(move_uploaded_file($tmpPath, $dossierDestination.$uniqnomSafe)){
+            // insertion dans la base de données
             require "../config/connexion.php";
             require "functions.php";
             try{
@@ -106,6 +114,7 @@
                     "categorie" => $categorie,
                     "cover" => $uniqnomSafe
                 ]);
+                // faille CSRF token
                 unset($_SESSION['csrf_token']);
                 header("Location: products.php?add=success");
                 exit();
@@ -118,6 +127,7 @@
             }
 
         }else{
+            // déplacement de l'image impossible
             header("Location: addProduct.php?error=10");
             exit();
         }
@@ -125,6 +135,7 @@
      
 
     }else{
+        // erreur dans le formulaire (hors fichier)
         header("Location: addProduct.php?error=".$err);
         exit();
     }

@@ -1,19 +1,21 @@
 <?php 
     require "../config/session.php";
     
+    // sécurité session admin
     if(!isset($_SESSION['email']) || !isset($_SESSION['id'])){
         header("Location: ../403.php");
         exit();
     }
 
+    // vérification de l'id du produit à modifier
     if(!isset($_GET['id']) || !filter_var($_GET['id'],FILTER_VALIDATE_INT)){
         header("Location: ../404.php");
         exit();
     }
 
+    // vérification si le produit existe bien
     require "../config/connexion.php";
     require "functions.php";
-
     $product = fetchOne($bdd,"SELECT * FROM products WHERE id=?",[$_GET['id']]);
     if(!$product){
         header("Location: ../404.php");
@@ -30,10 +32,14 @@
     <div class="container">
         <h2>Modifier produit: <?= $product['name'] ?></h2>
         <form action="treatmentUpdateProduct.php?id=<?= $product['id'] ?>" method="POST" enctype="multipart/form-data">
+
+            <!-- faille CSRF -->
             <?php 
                 $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
             ?>
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+            <!-- retirer le commentaire -->
+             
             <div class="form-group">
                <label for="nom">Nom: </label>
                <input type="text" name="name" id="nom" class="form-control" value="<?= $product['name'] ?>">
