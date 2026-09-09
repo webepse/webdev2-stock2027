@@ -55,7 +55,21 @@
             <div class="form-group my-2">
                 <label for="categorie">Catégorie: </label>
                 <select name="categorie" id="categorie" class="form-control">
-                    <option value="1">Catégorie 1</option>
+                    <?php
+                        $categories = fetchAll($bdd,"SELECT * FROM categories ORDER BY id");
+                        var_dump($categories);
+                        /* 
+                            écriture ternaire
+                            (condition) ? return si vrai : return si faux
+                          
+                           <?php echo ($category['id']===$product['id_category']) ? 'selected' : '' ?>
+                           <?= ($category['id']===$product['id_category']) ? 'selected' : '' ?>
+                        */
+                    ?>
+                    <?php foreach($categories as $category): ?>
+                    <option value="<?= $category['id'] ?>" <?= ($category['id']===$product['id_category']) ? 'selected' : '' ?>><?= htmlspecialchars($category['name']) ?></option>
+                    <?php endforeach; ?>
+                    
                 </select>
             </div>
             <div class="form-group my-2">

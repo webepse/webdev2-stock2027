@@ -41,7 +41,7 @@
                         $categories = fetchAll($bdd,"SELECT * FROM categories ORDER BY id");
                     ?>
                     <?php foreach($categories as $category): ?>
-                    <option value="<?= $category['id'] ?>"><?= $category['name'] ?></option>
+                    <option value="<?= $category['id'] ?>"><?= htmlspecialchars($category['name']) ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>

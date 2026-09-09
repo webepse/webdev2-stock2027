@@ -35,27 +35,29 @@
     <div class="container-fluid">
         <h1>Gestion des produits</h1>
         <?php
-            $products = fetchAll($bdd, "SELECT * FROM products ORDER BY id DESC");
+            $products = fetchAll($bdd, "SELECT products.id as pid, products.name as pname, categories.name as cname, products.prix as pprix FROM products INNER JOIN categories ON products.id_category = categories.id ORDER BY products.id DESC");
         ?>
         <a href="addProduct.php" class="btn btn-primary my-3">Ajouter un produit</a>
         <table class="table table-hover">
             <thead>
-                <tr>
-                    <th class="col-3 text-center">id</th>
-                    <th class="col-3 text-center">nom</th>
-                    <th class="col-3 text-center">prix</th>
-                    <th class="col-3 text-center">Action</th>
+                <tr class="text-center">
+                    <th class="col">#</th>
+                    <th class="col">Nom</th>
+                    <th class="col">Prix</th>
+                    <th class="col">Catégorie</th>
+                    <th class="col">Action</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach($products as $product) : ?>
-                    <tr>
-                        <td class="text-center"><?= $product['id'] ?></td>
-                        <td class="text-center"><?= htmlspecialchars($product['name']) ?></td>
-                        <td class="text-center"><?= $product['prix'] ?>€</td>
-                        <td class="text-center">
-                            <a href="updateProduct.php?id=<?= $product['id'] ?>" class="btn btn-warning mx-3">Modifier</a>
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal<?= $product['id'] ?>">
+                    <tr class="text-center">
+                        <td><?= $product['pid'] ?></td>
+                        <td><?= htmlspecialchars($product['pname']) ?></td>
+                        <td><?= $product['pprix'] ?>€</td>
+                        <td><?= $product['cname'] ?></td>
+                        <td>
+                            <a href="updateProduct.php?id=<?= $product['pid'] ?>" class="btn btn-warning mx-3">Modifier</a>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal<?= $product['pid'] ?>">
                             Supprimer
                             </button>
                         </td>
@@ -64,19 +66,19 @@
 
 
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModal<?= $product['id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel<?= $product['id'] ?>" aria-hidden="true">
+                    <div class="modal fade" id="exampleModal<?= $product['pid'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel<?= $product['pid'] ?>" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel<?= $product['id'] ?>">Confirmation de suppression</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel<?= $product['pid'] ?>">Confirmation de suppression</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            Voulez vous supprimer le produit <?= $product['name'] ?>
+                            Voulez vous supprimer le produit <?= $product['pname'] ?>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
-                            <a href="products.php?delete=<?= $product['id'] ?>" class="btn btn-danger">Supprimer</a>
+                            <a href="products.php?delete=<?= $product['pid'] ?>" class="btn btn-danger">Supprimer</a>
                         </div>
                         </div>
                     </div>
