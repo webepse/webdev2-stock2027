@@ -22,6 +22,24 @@
         exit();
     }
 
+    // gestion de suppression d'image
+    if(isset($_GET['delete']) && filter_var($_GET['delete'],FILTER_VALIDATE_INT)){
+        $delete = fetchOne($bdd,"SELECT * FROM images WHERE id=?",[$_GET['delete']]);
+       if(!$delete){
+        header("Location: ../404.php");
+        exit();
+       }else{
+        if(file_exists("../images/".$delete['file'])){
+            unlink("../images/".$delete['file']);
+        }
+       }
+       $result = execute($bdd,"DELETE FROM images WHERE id=?",[$_GET['delete']]);
+       var_dump($result);
+        // redirection vers la page
+        header("Location: updateProduct.php?id=".$_GET['id']);
+         exit();
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -83,6 +101,41 @@
                 <input type="submit" value="Modifier" class="btn btn-warning">
             </div>
         </form>
+        <h2>Gestion des images</h2>
+        <a href="addImg.php?id=<?= $product['id'] ?>" class="btn btn-primary my-2">Ajouter une image</a>
+        <table class="table table-striped">
+            <thead>
+                <tr class="text-center">
+                    <th class="col">#</th>
+                    <th class="col">image</th>
+                    <th class="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php 
+                    // SELECT * FROM images WHERE id_product=? => $product['id']
+                    // SELECT * FROM images WHERE id_product=:id => "id" => $product['id']
+                    $images = fetchAll($bdd,"SELECT * FROM images WHERE id_product=?",[$product['id']]);
+                    // count(array_keys($images))
+                    // sizeof($images)
+                ?>
+                <?php if(count(array_keys($images)) < 1 ) : ?>
+                    <tr>
+                        <td colspan='3' class='text-center'>Aucune image pour ce produit</td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach($images as $image) : ?>
+                        <tr class="text-center">
+                            <td><?= $image['id'] ?></td>
+                            <td><img class='col-2 img-fluid' src="../images/<?= $image['file'] ?>"></td>
+                            <td>
+                                <a href="updateProduct.php?id=<?= $product['id'] ?>&delete=<?= $image['id'] ?>" class="btn btn-danger">Supprimer</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
     </div>
 </body>
 </html>

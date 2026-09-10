@@ -33,8 +33,10 @@
        
         // supprimer les données de la catégorie ciblée
        $resultCat = execute($bdd,"DELETE FROM categories WHERE id=?",[$_GET['delete']]);
-       var_dump($resultProd);
-       var_dump($resultCat);
+       //var_dump($resultProd);
+       //var_dump($resultCat);
+       header("Location: categories.php?successdelete=".$_GET['delete']);
+       exit();
     }
     /*****************************/
 

@@ -26,6 +26,8 @@
 
        $result = execute($bdd,"DELETE FROM products WHERE id=?",[$_GET['delete']]);
        //var_dump($result);
+       header("Location: products.php?successdelete=".$_GET['delete']);
+       exit();
     }
 
 ?>
