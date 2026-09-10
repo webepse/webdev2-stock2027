@@ -24,6 +24,15 @@
       
        }
 
+       $deleteGal = fetchAll($bdd,"SELECT * FROM images WHERE id_product=?",[$_GET['delete']]);
+        foreach($deleteGal as $img){
+            if(file_exists("../images/".$img['file'])){
+                unlink("../images/".$img['file']);
+            }
+        }
+        
+       $galResult = execute($bdd,"DELETE FROM images WHERE id_product=?",[$_GET['delete']]);
+
        $result = execute($bdd,"DELETE FROM products WHERE id=?",[$_GET['delete']]);
        //var_dump($result);
        header("Location: products.php?successdelete=".$_GET['delete']);

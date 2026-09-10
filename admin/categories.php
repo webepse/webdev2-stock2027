@@ -26,6 +26,17 @@
             if(file_exists("../images/".$prod['cover'])){
                 unlink("../images/".$prod['cover']);
             }
+            if(file_exists("../images/mini_".$prod['cover'])){
+                unlink("../images/mini_".$prod['cover']);
+            }
+
+            $deleteGal = fetchAll($bdd,"SELECT * FROM images WHERE id_product=?",[$prod['id']]);
+            foreach($deleteGal as $img){
+                if(file_exists("../images/".$img['file'])){
+                    unlink("../images/".$img['file']);
+                }
+            }
+            $galResult = execute($bdd,"DELETE FROM images WHERE id_product=?",[$prod['id']]);
        }
 
        // supprimer les données des produits assocé à la catégorie ciblée
