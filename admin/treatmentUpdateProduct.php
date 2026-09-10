@@ -142,9 +142,15 @@
                      if(file_exists($dossierDestination.$product['cover'])){
                         unlink($dossierDestination.$product['cover']);
                     }
+                     if(file_exists($dossierDestination."mini_".$product['cover'])){
+                        //"../images/ "."mini_"."nomfichier.jpg"
+                        unlink($dossierDestination."mini_".$product['cover']);
+                    }
 
                     // redirection vers la page products.php avec l'id du produit modifié
-                    header("Location: products.php?update=success&upid=".$product['id']);
+                    // redim.php?image=161561-monimage.jpg&update=23
+                    // $_GET = ["image"=>"161561-monimage.jpg", "update"=>23]
+                     header("Location: redim.php?image=".urlencode($uniqnomSafe)."&update=".$product['id']);
                     exit();
                 }catch(PDOException $e){
                     // en cas d'erreur

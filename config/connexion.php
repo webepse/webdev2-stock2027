@@ -6,6 +6,6 @@ try{
    http_response_code(500);
    exit("Une erreur est survenue lors de la connexion au serveur");
 }
-
+//Loris est passé ici
 
 ?>
