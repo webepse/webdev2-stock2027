@@ -18,6 +18,9 @@
         if(file_exists("../images/".$delete['cover'])){
             unlink("../images/".$delete['cover']);
         }
+        if(file_exists("../images/mini_".$delete['cover'])){
+            unlink("../images/mini_".$delete['cover']);
+        }
       
        }
 

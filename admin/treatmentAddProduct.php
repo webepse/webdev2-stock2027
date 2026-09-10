@@ -116,7 +116,10 @@
                 ]);
                 // faille CSRF token
                 unset($_SESSION['csrf_token']);
-                header("Location: products.php?add=success");
+                //header("Location: products.php?add=success");
+                // test test
+                // test+test
+                header("Location: redim.php?image=".urlencode($uniqnomSafe)."&add=success");
                 exit();
             }catch(PDOException $e){
                 if(file_exists($dossierDestination.$uniqnomSafe)){
