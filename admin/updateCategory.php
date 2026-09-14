@@ -14,7 +14,7 @@
 
     // vérification si la catégorie existe bien
     require "../config/connexion.php";
-    require "functions.php";
+    require "../assets/functions.php";
     $category = fetchOne($bdd,"SELECT * FROM categories WHERE id=?",[$_GET['id']]);
     if(!$category){
         header("Location: ../404.php");

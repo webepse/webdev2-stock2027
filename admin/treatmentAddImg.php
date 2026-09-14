@@ -24,7 +24,7 @@
 
     // vérification si le produit existe bien
     require "../config/connexion.php";
-    require "functions.php";
+    require "../assets/functions.php";
     $product = fetchOne($bdd,"SELECT * FROM products WHERE id=?",[$_GET['id']]);
     if(!$product){
         header("Location: ../404.php");

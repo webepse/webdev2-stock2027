@@ -23,3 +23,4 @@
     include("pages/".$page);
     
     include("partials/foot.php");
+

@@ -37,7 +37,7 @@
            
         // insertion dans la base de données
         require "../config/connexion.php";
-        require "functions.php";
+        require "../assets/functions.php";
         
             insert($bdd, "INSERT INTO categories(name,description) VALUES(:name,:description)",[
                 "name" => $name,

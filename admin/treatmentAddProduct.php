@@ -105,7 +105,7 @@
         if(move_uploaded_file($tmpPath, $dossierDestination.$uniqnomSafe)){
             // insertion dans la base de données
             require "../config/connexion.php";
-            require "functions.php";
+            require "../assets/functions.php";
             try{
                 insert($bdd, "INSERT INTO products(name,description,prix,id_category,cover) VALUES(:name,:description,:prix,:categorie,:cover)",[
                     "name" => $name,

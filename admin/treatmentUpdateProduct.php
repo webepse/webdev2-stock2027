@@ -24,7 +24,7 @@
     }
     // connexion bdd + functions
     require "../config/connexion.php";
-    require "functions.php";
+    require "../assets/functions.php";
 
     // vérification de l'existance du produit dans la bdd
     $product = fetchOne($bdd,"SELECT * FROM products WHERE id=?",[$_GET['id']]);

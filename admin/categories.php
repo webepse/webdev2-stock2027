@@ -9,7 +9,7 @@
 
     // base de données
     require_once "../config/connexion.php";
-    require "functions.php";
+    require "../assets/functions.php";
 
     // fonctionnalité de suppression 
      if(isset($_GET['delete']) && filter_var($_GET['delete'],FILTER_VALIDATE_INT)){

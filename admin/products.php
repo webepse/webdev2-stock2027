@@ -7,7 +7,7 @@
     }
 
     require_once "../config/connexion.php";
-    require "functions.php";
+    require "../assets/functions.php";
 
      if(isset($_GET['delete']) && filter_var($_GET['delete'],FILTER_VALIDATE_INT)){
        $delete = fetchOne($bdd,"SELECT * FROM products WHERE id=?",[$_GET['delete']]);

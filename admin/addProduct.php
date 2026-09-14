@@ -37,7 +37,7 @@
                 <select name="categorie" id="categorie" class="form-control">
                     <?php
                         require "../config/connexion.php";
-                        require "functions.php";
+                        require "../assets/functions.php";
                         $categories = fetchAll($bdd,"SELECT * FROM categories ORDER BY id");
                     ?>
                     <?php foreach($categories as $category): ?>
