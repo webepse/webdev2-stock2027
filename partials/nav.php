@@ -12,12 +12,6 @@
         <li class="nav-item">
           <a class="nav-link" href="index.php?action=products">Produits</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="index.php?action=categories">Catégories</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Galerie</a>
-        </li>
       </ul>
     </div>
   </div>

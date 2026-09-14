@@ -14,6 +14,18 @@
         if(array_key_exists($_GET['action'],$pages)){
 
             if($_GET['action']==="product"){
+                if(isset($_GET['id']) AND !empty($_GET['id']) AND filter_var($_GET['id'],FILTER_VALIDATE_INT)){
+                    $product = fetchOne($bdd,"SELECT products.name as pname, products.description as pdescri, products.prix as prix, categories.name as cname, products.cover as cover FROM products INNER JOIN categories ON products.id_category = categories.id WHERE products.id=?",[$_GET['id']]);
+                    if(!$product){
+                        header("Location: 404.php");
+                        exit();
+                    }else{
+                        $page = $pages["product"];
+                    }
+                }else{
+                    header("Location: 404.php");
+                    exit();
+                }
 
             }elseif($_GET['action']==="products"){
                 // construction de offset et de limit + partage de la page 
