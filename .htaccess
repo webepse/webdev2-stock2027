@@ -1,0 +1,15 @@
+<ifModule mod_rewrite.c>
+    Options +FollowSymlinks
+    RewriteEngine On
+    #pour les alias
+    RewriteBase /PHPJordan/2027/webdev2-stock2027/
+
+    RewriteRule ^product-([0-9]+)$ index.php?action=product&id=$1 [L]
+    # RewriteRule ^categorie-([0-9]+)$ index.php?action=categorie&id=$1
+
+
+</ifModule>
+
+
+
+

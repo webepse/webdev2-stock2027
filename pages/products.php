@@ -33,12 +33,10 @@
                 <div class="card-body">
                     <h5 class="card-title"><?= htmlspecialchars($product['name']) ?></h5>
                     <p class="card-text"><?= htmlspecialchars(nl2br($product['description'])) ?></p>
-                    <a href="index.php?action=product&id=<?= $product['id'] ?>" class="btn btn-primary">En voir plus</a>
+                    <a href="product-<?= $product['id'] ?>" class="btn btn-primary">En voir plus</a>
                 </div>
             </div>
         <?php endforeach ?>
     </div>
-    
-
-
 </div>
+
